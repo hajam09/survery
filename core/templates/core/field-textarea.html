@@ -1,0 +1,135 @@
+<div class='container mt-5'>
+    <h3 class='mb-4'>Textarea Field</h3>
+
+    <form id='textareaForm'>
+        <!-- Label -->
+        <div class='form-group row'>
+            <label class='col-md-2 col-form-label'><b>Label</b></label>
+            <div class='col-md-10'>
+                <input type='text' class='form-control' id='textareaLabel' placeholder='Enter label'>
+            </div>
+        </div>
+
+        <!-- Title -->
+        <div class='form-group row'>
+            <label class='col-md-2 col-form-label'><b>Title</b></label>
+            <div class='col-md-10'>
+                <input type='text' class='form-control' id='textareaTitle' placeholder='Enter title'>
+            </div>
+        </div>
+
+        <!-- Placeholder -->
+        <div class='form-group row'>
+            <label class='col-md-2 col-form-label'><b>Placeholder</b></label>
+            <div class='col-md-10'>
+                <input type='text' class='form-control' id='textareaPlaceholder' placeholder='Enter placeholder'>
+            </div>
+        </div>
+
+        <!-- Rows -->
+        <div class='form-group row'>
+            <label class='col-md-2 col-form-label'><b>Rows</b></label>
+            <div class='col-md-10'>
+                <input type='number' class='form-control' id='textareaRows' placeholder='Enter number of rows'>
+            </div>
+        </div>
+
+        <!-- Cols -->
+        <div class='form-group row'>
+            <label class='col-md-2 col-form-label'><b>Cols</b></label>
+            <div class='col-md-10'>
+                <input type='number' class='form-control' id='textareaCols' placeholder='Enter number of cols'>
+            </div>
+        </div>
+
+        <!-- Max Length -->
+        <div class='form-group row'>
+            <label class='col-md-2 col-form-label'><b>Max Length</b></label>
+            <div class='col-md-10'>
+                <input type='number' class='form-control' id='textareaMaxLength' placeholder='Enter max length'>
+            </div>
+        </div>
+
+        <!-- Readonly -->
+        <div class='form-group row'>
+            <div class='col-md-2'><b>Readonly</b></div>
+            <div class='col-md-10 form-check'>
+                <input type='checkbox' class='form-check-input' id='textareaReadonly'>
+                <label class='form-check-label' for='textareaReadonly'>Enable</label>
+            </div>
+        </div>
+
+        <!-- Disabled -->
+        <div class='form-group row'>
+            <div class='col-md-2'><b>Disabled</b></div>
+            <div class='col-md-10 form-check'>
+                <input type='checkbox' class='form-check-input' id='textareaDisabled'>
+                <label class='form-check-label' for='textareaDisabled'>Enable</label>
+            </div>
+        </div>
+
+        <!-- Required -->
+        <div class='form-group row'>
+            <div class='col-md-2'><b>Required</b></div>
+            <div class='col-md-10 form-check'>
+                <input type='checkbox' class='form-check-input' id='textareaRequired'>
+                <label class='form-check-label' for='textareaRequired'>Enable</label>
+            </div>
+        </div>
+
+        <!-- Spellcheck -->
+        <div class='form-group row'>
+            <div class='col-md-2'><b>Spellcheck</b></div>
+            <div class='col-md-10 form-check'>
+                <input type='checkbox' class='form-check-input' id='textareaSpellcheck'>
+                <label class='form-check-label' for='textareaSpellcheck'>Enable</label>
+            </div>
+        </div>
+        <button type='submit' class='btn btn-primary float-right'> Save</button>
+    </form>
+
+    <h5 class='mt-5'>Live Preview:</h5>
+    <div class='form-group mb-5'>
+        <label id='previewTextareaLabel'><b>Label</b></label>
+        <textarea class='form-control' id='previewTextareaInput'></textarea>
+    </div>
+</div>
+
+<script>
+    const previewTextarea = document.getElementById('previewTextareaInput');
+    const previewTextareaLabel = document.getElementById('previewTextareaLabel');
+
+    const fields = {
+        label: document.getElementById('textareaLabel'),
+        title: document.getElementById('textareaTitle'),
+        placeholder: document.getElementById('textareaPlaceholder'),
+        rows: document.getElementById('textareaRows'),
+        cols: document.getElementById('textareaCols'),
+        maxlength: document.getElementById('textareaMaxLength'),
+        readonly: document.getElementById('textareaReadonly'),
+        disabled: document.getElementById('textareaDisabled'),
+        required: document.getElementById('textareaRequired'),
+        spellcheck: document.getElementById('textareaSpellcheck')
+    };
+
+    function updateTextareaPreview() {
+        previewTextareaLabel.innerHTML = fields.label.value;
+        previewTextarea.title = fields.title.value || '';
+        previewTextarea.placeholder = fields.placeholder.value || '';
+        previewTextarea.rows = fields.rows.value || 2;
+        previewTextarea.cols = fields.cols.value || 20;
+        previewTextarea.maxLength = fields.maxlength.value || '';
+        previewTextarea.readOnly = fields.readonly.checked;
+        previewTextarea.disabled = fields.disabled.checked;
+        previewTextarea.required = fields.required.checked;
+        previewTextarea.spellcheck = fields.spellcheck.checked;
+    }
+
+    Object.values(fields).forEach(field => {
+        field.addEventListener('input', updateTextareaPreview);
+        field.addEventListener('change', updateTextareaPreview);
+    });
+
+    // Initialize preview
+    updateTextareaPreview();
+</script>

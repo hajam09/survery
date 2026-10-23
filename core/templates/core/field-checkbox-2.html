@@ -1,0 +1,189 @@
+<div class="container mt-5">
+    <h3 class="mb-4">Dynamic Input Builder with Live Preview</h3>
+
+    <!-- Input Type Selector -->
+    <div class="form-group row">
+        <label class="col-md-2 col-form-label"><b>Select Input Type</b></label>
+        <div class="col-md-10">
+            <select class="form-control" id="inputTypeSelector">
+                <option value="text">Text</option>
+                <option value="password">Password</option>
+                <option value="email">Email</option>
+                <option value="tel">Telephone</option>
+                <option value="textarea">Textarea</option>
+                <option value="number">Number</option>
+                <option value="range">Range</option>
+                <option value="date">Date</option>
+                <option value="datetime-local">Datetime-Local</option>
+                <option value="month">Month</option>
+                <option value="time">Time</option>
+                <option value="week">Week</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- Dynamic Form Fields -->
+    <form id="dynamicForm" class="mt-4"></form>
+
+    <hr>
+
+    <h5 class="mt-4">Live Preview:</h5>
+    <div class="form-group mb-5">
+        <label id="previewLabel"><b>Label</b></label>
+        <div id="previewContainer"></div>
+    </div>
+</div>
+
+<script>
+    const inputTypeSelector = document.getElementById('inputTypeSelector');
+    const dynamicForm = document.getElementById('dynamicForm');
+    const previewContainer = document.getElementById('previewContainer');
+    const previewLabel = document.getElementById('previewLabel');
+
+    // Config for fields per input type
+    const inputConfigs = {
+        text: ['label','title','value','placeholder','maxlength','readonly','disabled','required'],
+        password: ['label','title','placeholder','minlength','maxlength','readonly','disabled','required'],
+        email: ['label','title','value','placeholder','maxlength','readonly','disabled','required'],
+        tel: ['label','title','value','placeholder','maxlength','pattern','readonly','disabled','required'],
+        textarea: ['label','title','rows','cols','value','placeholder','maxlength','spellcheck','readonly','disabled','required'],
+        number: ['label','title','value','min','max','step','placeholder','readonly','disabled','required','pattern'],
+        range: ['label','title','value','min','max','step','readonly','disabled','required'],
+        date: ['label','title','value','min','max','step','readonly','disabled','required'],
+        'datetime-local': ['label','title','value','min','max','step','readonly','disabled','required'],
+        month: ['label','title','value','min','max','step','readonly','disabled','required'],
+        time: ['label','title','value','min','max','step','readonly','disabled','required'],
+        week: ['label','title','value','min','max','step','readonly','disabled','required']
+    };
+
+    // Store references to input elements dynamically
+    let fieldElements = {};
+
+    function createDynamicForm(inputType) {
+        dynamicForm.innerHTML = '';
+        fieldElements = {};
+
+        inputConfigs[inputType].forEach(field => {
+            const row = document.createElement('div');
+            row.className = 'form-group row';
+
+            let colLabel, colInput;
+
+            if(['readonly','disabled','required'].includes(field)) {
+                // Checkbox layout
+                colLabel = document.createElement('div');
+                colLabel.className = 'col-md-2';
+                colLabel.innerHTML = `<b>${capitalize(field)}</b>`;
+
+                colInput = document.createElement('div');
+                colInput.className = 'col-md-10 form-check';
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.className = 'form-check-input';
+                checkbox.id = 'field_' + field;
+                const label = document.createElement('label');
+                label.className = 'form-check-label';
+                label.htmlFor = 'field_' + field;
+                label.innerText = 'Enable';
+                colInput.appendChild(checkbox);
+                colInput.appendChild(label);
+
+                fieldElements[field] = checkbox;
+            } else {
+                colLabel = document.createElement('label');
+                colLabel.className = 'col-md-2 col-form-label';
+                colLabel.innerHTML = `<b>${capitalize(field)}</b>`;
+                colInput = document.createElement('div');
+                colInput.className = 'col-md-10';
+
+                let input;
+                if(inputType==='textarea' && field!=='rows' && field!=='cols' && field!=='spellcheck'){
+                    input = document.createElement('textarea');
+                    input.className = 'form-control';
+                } else if(['min','max','step','maxlength','minlength','rows','cols'].includes(field)) {
+                    input = document.createElement('number'===field?'input':'input');
+                    input.type = 'number';
+                    input.className = 'form-control';
+                } else if(field==='spellcheck'){
+                    input = document.createElement('input');
+                    input.type = 'checkbox';
+                    input.className = 'form-check-input';
+                } else if(['value','placeholder','title','label'].includes(field)){
+                    input = document.createElement('input');
+                    input.type = (field==='value' && ['date','datetime-local','month','time','week','number','range'].includes(inputType)) ? inputType : 'text';
+                    input.className = 'form-control';
+                } else {
+                    input = document.createElement('input');
+                    input.type = 'text';
+                    input.className = 'form-control';
+                }
+                input.id = 'field_' + field;
+                colInput.appendChild(input);
+                fieldElements[field] = input;
+            }
+
+            row.appendChild(colLabel);
+            row.appendChild(colInput);
+            dynamicForm.appendChild(row);
+        });
+
+        // Create preview input
+        createPreviewInput(inputType);
+
+        // Add event listeners
+        Object.values(fieldElements).forEach(el => {
+            el.addEventListener('input', updatePreview);
+            el.addEventListener('change', updatePreview);
+        });
+
+        updatePreview();
+    }
+
+    let previewInput;
+
+    function createPreviewInput(type){
+        previewContainer.innerHTML = '';
+        if(type==='textarea'){
+            previewInput = document.createElement('textarea');
+            previewInput.className = 'form-control';
+        } else {
+            previewInput = document.createElement('input');
+            previewInput.type = type;
+            previewInput.className = 'form-control';
+        }
+        previewContainer.appendChild(previewInput);
+    }
+
+    function updatePreview(){
+        previewLabel.innerHTML = fieldElements.label?.value || 'Label';
+        previewInput.title = fieldElements.title?.value || '';
+
+        // Set value attributes
+        if('value' in fieldElements) previewInput.value = fieldElements.value?.value || '';
+        if('placeholder' in fieldElements) previewInput.placeholder = fieldElements.placeholder?.value || '';
+        if('min' in fieldElements) previewInput.min = fieldElements.min?.value || '';
+        if('max' in fieldElements) previewInput.max = fieldElements.max?.value || '';
+        if('step' in fieldElements) previewInput.step = fieldElements.step?.value || 1;
+        if('maxlength' in fieldElements) previewInput.maxLength = fieldElements.maxlength?.value || '';
+        if('minlength' in fieldElements) previewInput.minLength = fieldElements.minlength?.value || '';
+        if('rows' in fieldElements) previewInput.rows = fieldElements.rows?.value || 2;
+        if('cols' in fieldElements) previewInput.cols = fieldElements.cols?.value || '';
+        if('spellcheck' in fieldElements) previewInput.spellcheck = fieldElements.spellcheck?.checked || false;
+
+        // Set boolean attributes
+        previewInput.readOnly = fieldElements.readonly?.checked || false;
+        previewInput.disabled = fieldElements.disabled?.checked || false;
+        previewInput.required = fieldElements.required?.checked || false;
+    }
+
+    function capitalize(str){
+        return str.charAt(0).toUpperCase() + str.slice(1);
+    }
+
+    // Initialize first type
+    createDynamicForm(inputTypeSelector.value);
+
+    inputTypeSelector.addEventListener('change', ()=>{
+        createDynamicForm(inputTypeSelector.value);
+    });
+</script>

@@ -1,0 +1,36 @@
+<div class='form-group mt-5'>
+    <label>Select field to add to the survey</label>
+    <select class='form-control' id='inputTypeSelect'>
+        <option value=''>-- Select Input Type --</option>
+        <option value='checkbox'>Checkbox – Allows multiple selections</option>
+        <option value='date'>Date – Select a date</option>
+        <option value='datetime-local'>Datetime – Select date and time without timezone</option>
+        <option value='email'>Email – For email addresses; validates email format</option>
+        <option value='month'>Month – Select month and year</option>
+        <option value='number'>Number – Numeric input with optional min/max/step</option>
+        <option value='password'>Password – Hides typed characters for sensitive info</option>
+        <option value='radio'>Radio – Allows only one selection in a group</option>
+        <option value='range'>Range – Slider to select a number within a range</option>
+        <option value='tel'>Telephone – For telephone numbers</option>
+        <option value='text'>Text – Standard single-line text input</option>
+        <option value='time'>Time – Select time</option>
+        <option value='week'>Week – Select week</option>
+
+        <option value='textarea'>Text area – Multi-line text input</option>
+        <option value='select'>Select – Dropdown menu</option>
+    </select>
+
+    {% block field %}{% endblock %}
+</div>
+
+<script>
+    document.getElementById('inputTypeSelect').addEventListener('change', function () {
+        const fieldType = this.value;
+        if (fieldType) {
+            // Get current URL without query string
+            const baseUrl = window.location.origin + window.location.pathname;
+            // Redirect with ?field=<FIELD_TYPE>
+            window.location.href = `${baseUrl}?field=${encodeURIComponent(fieldType)}`;
+        }
+    });
+</script>

@@ -1,0 +1,112 @@
+<div class='container mt-5'>
+    <h3 class='mb-4'>Text Input Field</h3>
+
+    <form id='inputForm'>
+        <div class='form-group row'>
+            <label class='col-md-2 col-form-label'><b>Label</b></label>
+            <div class='col-md-10'>
+                <input type='text' class='form-control' id='inputLabel' placeholder='Enter label'>
+            </div>
+        </div>
+
+        <div class='form-group row'>
+            <label class='col-md-2 col-form-label'><b>Title</b></label>
+            <div class='col-md-10'>
+                <input type='text' class='form-control' id='inputTitle' placeholder='Enter title'>
+            </div>
+        </div>
+
+        <div class='form-group row'>
+            <label class='col-md-2 col-form-label'><b>Value</b></label>
+            <div class='col-md-10'>
+                <input type='text' class='form-control' id='inputValue' placeholder='Enter default value'>
+            </div>
+        </div>
+
+        <div class='form-group row'>
+            <label class='col-md-2 col-form-label'><b>Placeholder</b></label>
+            <div class='col-md-10'>
+                <input type='text' class='form-control' id='inputPlaceholder' placeholder='Enter placeholder'>
+            </div>
+        </div>
+
+        <div class='form-group row'>
+            <label class='col-md-2 col-form-label'><b>Max Length</b></label>
+            <div class='col-md-10'>
+                <input type='number' class='form-control' id='inputMaxLength' placeholder='Enter max length'>
+            </div>
+        </div>
+
+        <div class='form-group row'>
+            <div class='col-md-2'><b>Readonly</b></div>
+            <div class='col-md-10 form-check'>
+                <input type='checkbox' class='form-check-input' id='inputReadonly'>
+                <label class='form-check-label' for='inputReadonly'>Enable</label>
+            </div>
+        </div>
+
+        <div class='form-group row'>
+            <div class='col-md-2'><b>Disabled</b></div>
+            <div class='col-md-10 form-check'>
+                <input type='checkbox' class='form-check-input' id='inputDisabled'>
+                <label class='form-check-label' for='inputDisabled'>Enable</label>
+            </div>
+        </div>
+
+        <div class='form-group row'>
+            <div class='col-md-2'><b>Required</b></div>
+            <div class='col-md-10 form-check'>
+                <input type='checkbox' class='form-check-input' id='inputRequired'>
+                <label class='form-check-label' for='inputRequired'>Enable</label>
+            </div>
+        </div>
+
+        <button type='submit' class='btn btn-primary float-right'> Save</button>
+    </form>
+
+    <h5 class='mt-5'>Live Preview:</h5>
+    <div class='form-group mb-5'>
+        <label id='previewLabel'><b>Label</b></label>
+        <input type='text' class='form-control' id='previewInput'>
+    </div>
+</div>
+
+<script>
+    const previewInput = document.getElementById('previewInput');
+    const previewLabel = document.getElementById('previewLabel');
+
+    // Form fields
+    const fields = {
+        label: document.getElementById('inputLabel'),
+        title: document.getElementById('inputTitle'),
+        value: document.getElementById('inputValue'),
+        placeholder: document.getElementById('inputPlaceholder'),
+        maxlength: document.getElementById('inputMaxLength'),
+        readonly: document.getElementById('inputReadonly'),
+        disabled: document.getElementById('inputDisabled'),
+        required: document.getElementById('inputRequired')
+    };
+
+    function updatePreview() {
+        // Update label
+        previewLabel.innerHTML = fields.label.value;
+
+        // Update input attributes
+        previewInput.value = fields.value.value || '';
+        previewInput.placeholder = fields.placeholder.value || '';
+        previewInput.title = fields.title.value || '';
+        previewInput.maxLength = fields.maxlength.value || '';
+        previewInput.readOnly = fields.readonly.checked;
+        previewInput.disabled = fields.disabled.checked;
+        previewInput.required = fields.required.checked;
+    }
+
+    // Add event listeners to all fields
+    Object.values(fields).forEach(field => {
+        field.addEventListener('input', updatePreview);
+        field.addEventListener('change', updatePreview);
+    });
+
+    // Initialize preview
+    updatePreview();
+</script>

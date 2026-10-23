@@ -1,0 +1,114 @@
+<div class='container mt-5'>
+    <h3 class='mb-4'>Telephone Input Field</h3>
+
+    <form id='telForm'>
+        <!-- Label -->
+        <div class='form-group row'>
+            <label class='col-md-2 col-form-label'><b>Label</b></label>
+            <div class='col-md-10'>
+                <input type='text' class='form-control' id='telLabel' placeholder='Enter label'>
+            </div>
+        </div>
+
+        <!-- Title -->
+        <div class='form-group row'>
+            <label class='col-md-2 col-form-label'><b>Title</b></label>
+            <div class='col-md-10'>
+                <input type='text' class='form-control' id='telTitle' placeholder='Enter title'>
+            </div>
+        </div>
+
+        <!-- Placeholder -->
+        <div class='form-group row'>
+            <label class='col-md-2 col-form-label'><b>Placeholder</b></label>
+            <div class='col-md-10'>
+                <input type='text' class='form-control' id='telPlaceholder' placeholder='Enter placeholder'>
+            </div>
+        </div>
+
+        <!-- Max Length -->
+        <div class='form-group row'>
+            <label class='col-md-2 col-form-label'><b>Max Length</b></label>
+            <div class='col-md-10'>
+                <input type='number' class='form-control' id='telMaxLength' placeholder='Enter max length'>
+            </div>
+        </div>
+
+        <!-- Pattern -->
+        <div class='form-group row'>
+            <label class='col-md-2 col-form-label'><b>Pattern</b></label>
+            <div class='col-md-10'>
+                <input type='text' class='form-control' id='telPattern' placeholder='Enter regex pattern'>
+            </div>
+        </div>
+
+        <!-- Readonly -->
+        <div class='form-group row'>
+            <div class='col-md-2'><b>Readonly</b></div>
+            <div class='col-md-10 form-check'>
+                <input type='checkbox' class='form-check-input' id='telReadonly'>
+                <label class='form-check-label' for='telReadonly'>Enable</label>
+            </div>
+        </div>
+
+        <!-- Disabled -->
+        <div class='form-group row'>
+            <div class='col-md-2'><b>Disabled</b></div>
+            <div class='col-md-10 form-check'>
+                <input type='checkbox' class='form-check-input' id='telDisabled'>
+                <label class='form-check-label' for='telDisabled'>Enable</label>
+            </div>
+        </div>
+
+        <!-- Required -->
+        <div class='form-group row'>
+            <div class='col-md-2'><b>Required</b></div>
+            <div class='col-md-10 form-check'>
+                <input type='checkbox' class='form-check-input' id='telRequired'>
+                <label class='form-check-label' for='telRequired'>Enable</label>
+            </div>
+        </div>
+        <button type='submit' class='btn btn-primary float-right'> Save</button>
+    </form>
+
+    <h5 class='mt-5'>Live Preview:</h5>
+    <div class='form-group mb-5'>
+        <label id='previewTelLabel'><b>Label</b></label>
+        <input type='tel' class='form-control' id='previewTelInput'>
+    </div>
+</div>
+
+<script>
+    const previewTelInput = document.getElementById('previewTelInput');
+    const previewTelLabel = document.getElementById('previewTelLabel');
+
+    const fields = {
+        label: document.getElementById('telLabel'),
+        title: document.getElementById('telTitle'),
+        placeholder: document.getElementById('telPlaceholder'),
+        maxlength: document.getElementById('telMaxLength'),
+        pattern: document.getElementById('telPattern'),
+        readonly: document.getElementById('telReadonly'),
+        disabled: document.getElementById('telDisabled'),
+        required: document.getElementById('telRequired')
+    };
+
+    function updateTelPreview() {
+        previewTelLabel.innerHTML = fields.label.value;
+        previewTelInput.title = fields.title.value || '';
+        previewTelInput.placeholder = fields.placeholder.value || '';
+        previewTelInput.maxLength = fields.maxlength.value || '';
+        previewTelInput.pattern = fields.pattern.value || '';
+        previewTelInput.readOnly = fields.readonly.checked;
+        previewTelInput.disabled = fields.disabled.checked;
+        previewTelInput.required = fields.required.checked;
+    }
+
+    Object.values(fields).forEach(field => {
+        field.addEventListener('input', updateTelPreview);
+        field.addEventListener('change', updateTelPreview);
+    });
+
+    // Initialize preview
+    updateTelPreview();
+</script>

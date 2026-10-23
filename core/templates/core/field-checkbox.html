@@ -1,0 +1,184 @@
+<div class="container mt-5">
+    <h3 class="mb-4">Checkbox Builder</h3>
+
+    <form id="checkboxForm">
+        <!-- Label -->
+        <div class="form-group row">
+            <label class="col-md-2 col-form-label"><b>Label</b></label>
+            <div class="col-md-10">
+                <input type="text" class="form-control" id="checkboxLabel" placeholder="Enter label">
+            </div>
+        </div>
+
+        <!-- Title -->
+        <div class="form-group row">
+            <label class="col-md-2 col-form-label"><b>Title</b></label>
+            <div class="col-md-10">
+                <input type="text" class="form-control" id="checkboxTitle" placeholder="Enter title">
+            </div>
+        </div>
+
+        <!-- Disabled -->
+        <div class="form-group row">
+            <div class="col-md-2"><b>Disabled</b></div>
+            <div class="col-md-10 form-check">
+                <input type="checkbox" class="form-check-input" id="checkboxDisabled">
+                <label class="form-check-label" for="checkboxDisabled">Enable</label>
+            </div>
+        </div>
+
+        <!-- Required -->
+        <div class="form-group row">
+            <div class="col-md-2"><b>Required</b></div>
+            <div class="col-md-10 form-check">
+                <input type="checkbox" class="form-check-input" id="checkboxRequired">
+                <label class="form-check-label" for="checkboxRequired">Enable</label>
+            </div>
+        </div>
+
+        <!-- Layout -->
+        <div class="form-group row">
+            <label class="col-md-2 col-form-label"><b>Layout</b></label>
+            <div class="col-md-10">
+                <select class="form-control" id="checkboxLayout">
+                    <option value="vertical">Vertical</option>
+                    <option value="horizontal">Horizontal</option>
+                </select>
+            </div>
+        </div>
+
+        <hr>
+
+        <h5 class="mt-4">Options</h5>
+        <div id="checkboxOptionContainer"></div>
+
+        <button type="button" class="btn btn-secondary mt-2" id="addCheckboxOptionBtn">Add Option</button>
+    </form>
+
+    <hr>
+
+    <h5 class="mt-4">Live Preview:</h5>
+    <div class="form-group mb-5">
+        <label id="previewCheckboxLabel"><b>Label</b></label>
+        <div id="previewCheckboxContainer"></div>
+    </div>
+</div>
+
+<script>
+    const checkboxLabel = document.getElementById('checkboxLabel');
+    const checkboxTitle = document.getElementById('checkboxTitle');
+    const checkboxDisabled = document.getElementById('checkboxDisabled');
+    const checkboxRequired = document.getElementById('checkboxRequired');
+    const checkboxLayout = document.getElementById('checkboxLayout');
+    const checkboxOptionContainer = document.getElementById('checkboxOptionContainer');
+    const addCheckboxOptionBtn = document.getElementById('addCheckboxOptionBtn');
+    const previewCheckboxLabel = document.getElementById('previewCheckboxLabel');
+    const previewCheckboxContainer = document.getElementById('previewCheckboxContainer');
+
+    let checkboxOptionCount = 0;
+    const checkboxOptions = [];
+
+    function createCheckboxOptionRow(index){
+        const row = document.createElement('div');
+        row.className = 'form-row align-items-center mb-2';
+        row.id = 'checkboxOptionRow_' + index;
+
+        // Option Text
+        const colText = document.createElement('div');
+        colText.className = 'col';
+        const inputText = document.createElement('input');
+        inputText.type = 'text';
+        inputText.className = 'form-control';
+        inputText.placeholder = 'Option text';
+        inputText.dataset.index = index;
+        colText.appendChild(inputText);
+
+        // Option Value
+        const colValue = document.createElement('div');
+        colValue.className = 'col';
+        const inputValue = document.createElement('input');
+        inputValue.type = 'text';
+        inputValue.className = 'form-control';
+        inputValue.placeholder = 'Option value';
+        inputValue.dataset.index = index;
+        colValue.appendChild(inputValue);
+
+        // Remove button
+        const colRemove = document.createElement('div');
+        colRemove.className = 'col-auto';
+        const btnRemove = document.createElement('button');
+        btnRemove.type = 'button';
+        btnRemove.className = 'btn btn-danger';
+        btnRemove.innerText = 'Remove';
+        btnRemove.dataset.index = index;
+        btnRemove.addEventListener('click', ()=>{
+            checkboxOptionContainer.removeChild(row);
+            checkboxOptions[index] = null;
+            updateCheckboxPreview();
+        });
+        colRemove.appendChild(btnRemove);
+
+        row.appendChild(colText);
+        row.appendChild(colValue);
+        row.appendChild(colRemove);
+
+        checkboxOptions[index] = {text: '', value: ''};
+
+        // Add listeners to update preview
+        inputText.addEventListener('input', (e)=>{
+            checkboxOptions[index].text = e.target.value;
+            updateCheckboxPreview();
+        });
+        inputValue.addEventListener('input', (e)=>{
+            checkboxOptions[index].value = e.target.value;
+            updateCheckboxPreview();
+        });
+
+        checkboxOptionContainer.appendChild(row);
+    }
+
+    addCheckboxOptionBtn.addEventListener('click', ()=>{
+        createCheckboxOptionRow(checkboxOptionCount++);
+    });
+
+    function updateCheckboxPreview(){
+        previewCheckboxLabel.innerHTML = checkboxLabel.value || 'Label';
+        previewCheckboxContainer.innerHTML = '';
+        const layout = checkboxLayout.value;
+
+        checkboxOptions.forEach((opt, idx)=>{
+            if(opt){
+                const div = document.createElement('div');
+                div.className = layout === 'horizontal' ? 'form-check form-check-inline' : 'form-check';
+
+                const input = document.createElement('input');
+                input.type = 'checkbox';
+                input.className = 'form-check-input';
+                input.id = 'dynamicCheckbox_' + idx;
+                input.value = opt.value || opt.text || '';
+                input.disabled = checkboxDisabled.checked;
+                input.required = checkboxRequired.checked;
+
+                const label = document.createElement('label');
+                label.className = 'form-check-label';
+                label.htmlFor = input.id;
+                label.innerText = opt.text || 'Option';
+
+                div.appendChild(input);
+                div.appendChild(label);
+
+                previewCheckboxContainer.appendChild(div);
+            }
+        });
+    }
+
+    // Event listeners for attributes
+    [checkboxLabel, checkboxTitle, checkboxDisabled, checkboxRequired, checkboxLayout].forEach(el=>{
+        el.addEventListener('input', updateCheckboxPreview);
+        el.addEventListener('change', updateCheckboxPreview);
+    });
+
+    // Initialize with one option
+    createCheckboxOptionRow(checkboxOptionCount++);
+    updateCheckboxPreview();
+</script>

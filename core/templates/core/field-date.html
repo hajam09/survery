@@ -1,0 +1,125 @@
+<div class='container mt-5'>
+    <h3 class='mb-4'>Date Input Field</h3>
+
+    <form id='dateForm'>
+        <!-- Label -->
+        <div class='form-group row'>
+            <label class='col-md-2 col-form-label'><b>Label</b></label>
+            <div class='col-md-10'>
+                <input type='text' class='form-control' id='dateLabel' placeholder='Enter label'>
+            </div>
+        </div>
+
+        <!-- Title -->
+        <div class='form-group row'>
+            <label class='col-md-2 col-form-label'><b>Title</b></label>
+            <div class='col-md-10'>
+                <input type='text' class='form-control' id='dateTitle' placeholder='Enter title'>
+            </div>
+        </div>
+
+        <!-- Value -->
+        <div class='form-group row'>
+            <label class='col-md-2 col-form-label'><b>Value</b></label>
+            <div class='col-md-10'>
+                <input type='date' class='form-control' id='dateValue'>
+            </div>
+        </div>
+
+        <!-- Min -->
+        <div class='form-group row'>
+            <label class='col-md-2 col-form-label'><b>Min</b></label>
+            <div class='col-md-10'>
+                <input type='date' class='form-control' id='dateMin'>
+            </div>
+        </div>
+
+        <!-- Max -->
+        <div class='form-group row'>
+            <label class='col-md-2 col-form-label'><b>Max</b></label>
+            <div class='col-md-10'>
+                <input type='date' class='form-control' id='dateMax'>
+            </div>
+        </div>
+
+        <!-- Step -->
+        <div class='form-group row'>
+            <label class='col-md-2 col-form-label'><b>Step (days)</b></label>
+            <div class='col-md-10'>
+                <input type='number' class='form-control' id='dateStep' placeholder='Enter step in days' value='1'>
+            </div>
+        </div>
+
+        <!-- Readonly -->
+        <div class='form-group row'>
+            <div class='col-md-2'><b>Readonly</b></div>
+            <div class='col-md-10 form-check'>
+                <input type='checkbox' class='form-check-input' id='dateReadonly'>
+                <label class='form-check-label' for='dateReadonly'>Enable</label>
+            </div>
+        </div>
+
+        <!-- Disabled -->
+        <div class='form-group row'>
+            <div class='col-md-2'><b>Disabled</b></div>
+            <div class='col-md-10 form-check'>
+                <input type='checkbox' class='form-check-input' id='dateDisabled'>
+                <label class='form-check-label' for='dateDisabled'>Enable</label>
+            </div>
+        </div>
+
+        <!-- Required -->
+        <div class='form-group row'>
+            <div class='col-md-2'><b>Required</b></div>
+            <div class='col-md-10 form-check'>
+                <input type='checkbox' class='form-check-input' id='dateRequired'>
+                <label class='form-check-label' for='dateRequired'>Enable</label>
+            </div>
+        </div>
+        <button type='submit' class='btn btn-primary float-right'> Save</button>
+
+    </form>
+
+    <h5 class='mt-5'>Live Preview:</h5>
+    <div class='form-group mb-5'>
+        <label id='previewDateLabel'><b>Label</b></label>
+        <input type='date' class='form-control' id='previewDateInput'>
+    </div>
+</div>
+
+<script>
+    const previewDate = document.getElementById('previewDateInput');
+    const previewDateLabel = document.getElementById('previewDateLabel');
+
+    const fields = {
+        label: document.getElementById('dateLabel'),
+        title: document.getElementById('dateTitle'),
+        value: document.getElementById('dateValue'),
+        min: document.getElementById('dateMin'),
+        max: document.getElementById('dateMax'),
+        step: document.getElementById('dateStep'),
+        readonly: document.getElementById('dateReadonly'),
+        disabled: document.getElementById('dateDisabled'),
+        required: document.getElementById('dateRequired')
+    };
+
+    function updateDatePreview() {
+        previewDateLabel.innerHTML = fields.label.value;
+        previewDate.title = fields.title.value || '';
+        previewDate.value = fields.value.value || '';
+        previewDate.min = fields.min.value || '';
+        previewDate.max = fields.max.value || '';
+        previewDate.step = fields.step.value || 1;
+        previewDate.readOnly = fields.readonly.checked;
+        previewDate.disabled = fields.disabled.checked;
+        previewDate.required = fields.required.checked;
+    }
+
+    Object.values(fields).forEach(field => {
+        field.addEventListener('input', updateDatePreview);
+        field.addEventListener('change', updateDatePreview);
+    });
+
+    // Initialize preview
+    updateDatePreview();
+</script>

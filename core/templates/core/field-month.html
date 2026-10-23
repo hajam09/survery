@@ -1,0 +1,126 @@
+<div class='container mt-5'>
+    <h3 class='mb-4'>Month Input Field</h3>
+
+    <form id='monthForm'>
+        <!-- Label -->
+        <div class='form-group row'>
+            <label class='col-md-2 col-form-label'><b>Label</b></label>
+            <div class='col-md-10'>
+                <input type='text' class='form-control' id='monthLabel' placeholder='Enter label'>
+            </div>
+        </div>
+
+        <!-- Title -->
+        <div class='form-group row'>
+            <label class='col-md-2 col-form-label'><b>Title</b></label>
+            <div class='col-md-10'>
+                <input type='text' class='form-control' id='monthTitle' placeholder='Enter title'>
+            </div>
+        </div>
+
+        <!-- Value -->
+        <div class='form-group row'>
+            <label class='col-md-2 col-form-label'><b>Value</b></label>
+            <div class='col-md-10'>
+                <input type='month' class='form-control' id='monthValue'>
+            </div>
+        </div>
+
+        <!-- Min -->
+        <div class='form-group row'>
+            <label class='col-md-2 col-form-label'><b>Min</b></label>
+            <div class='col-md-10'>
+                <input type='month' class='form-control' id='monthMin'>
+            </div>
+        </div>
+
+        <!-- Max -->
+        <div class='form-group row'>
+            <label class='col-md-2 col-form-label'><b>Max</b></label>
+            <div class='col-md-10'>
+                <input type='month' class='form-control' id='monthMax'>
+            </div>
+        </div>
+
+        <!-- Step -->
+        <div class='form-group row'>
+            <label class='col-md-2 col-form-label'><b>Step (months)</b></label>
+            <div class='col-md-10'>
+                <input type='number' class='form-control' id='monthStep' placeholder='Enter step in months' value='1'>
+            </div>
+        </div>
+
+        <!-- Readonly -->
+        <div class='form-group row'>
+            <div class='col-md-2'><b>Readonly</b></div>
+            <div class='col-md-10 form-check'>
+                <input type='checkbox' class='form-check-input' id='monthReadonly'>
+                <label class='form-check-label' for='monthReadonly'>Enable</label>
+            </div>
+        </div>
+
+        <!-- Disabled -->
+        <div class='form-group row'>
+            <div class='col-md-2'><b>Disabled</b></div>
+            <div class='col-md-10 form-check'>
+                <input type='checkbox' class='form-check-input' id='monthDisabled'>
+                <label class='form-check-label' for='monthDisabled'>Enable</label>
+            </div>
+        </div>
+
+        <!-- Required -->
+        <div class='form-group row'>
+            <div class='col-md-2'><b>Required</b></div>
+            <div class='col-md-10 form-check'>
+                <input type='checkbox' class='form-check-input' id='monthRequired'>
+                <label class='form-check-label' for='monthRequired'>Enable</label>
+            </div>
+        </div>
+        <button type='submit' class='btn btn-primary float-right'> Save</button>
+
+    </form>
+
+
+    <h5 class='mt-5'>Live Preview:</h5>
+    <div class='form-group mb-5'>
+        <label id='previewMonthLabel'><b>Label</b></label>
+        <input type='month' class='form-control' id='previewMonthInput'>
+    </div>
+</div>
+
+<script>
+    const previewMonth = document.getElementById('previewMonthInput');
+    const previewMonthLabel = document.getElementById('previewMonthLabel');
+
+    const fields = {
+        label: document.getElementById('monthLabel'),
+        title: document.getElementById('monthTitle'),
+        value: document.getElementById('monthValue'),
+        min: document.getElementById('monthMin'),
+        max: document.getElementById('monthMax'),
+        step: document.getElementById('monthStep'),
+        readonly: document.getElementById('monthReadonly'),
+        disabled: document.getElementById('monthDisabled'),
+        required: document.getElementById('monthRequired')
+    };
+
+    function updateMonthPreview() {
+        previewMonthLabel.innerHTML = fields.label.value;
+        previewMonth.title = fields.title.value || '';
+        previewMonth.value = fields.value.value || '';
+        previewMonth.min = fields.min.value || '';
+        previewMonth.max = fields.max.value || '';
+        previewMonth.step = fields.step.value || 1;
+        previewMonth.readOnly = fields.readonly.checked;
+        previewMonth.disabled = fields.disabled.checked;
+        previewMonth.required = fields.required.checked;
+    }
+
+    Object.values(fields).forEach(field => {
+        field.addEventListener('input', updateMonthPreview);
+        field.addEventListener('change', updateMonthPreview);
+    });
+
+    // Initialize preview
+    updateMonthPreview();
+</script>

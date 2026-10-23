@@ -1,0 +1,24 @@
+/* Apply size to all checkboxes */
+input[type="checkbox"] {
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+}
+
+input[type="radio"] {
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+}
+
+
+/* If the checkbox is immediately followed by a label, add left margin to the label */
+input[type="checkbox"] + label {
+    margin-left: 10px;
+    cursor: pointer; /* optional, makes label clickable feel nicer */
+}
+
+input[type="radio"] + label {
+    margin-left: 10px;
+    cursor: pointer; /* optional, makes label clickable feel nicer */
+}

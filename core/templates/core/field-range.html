@@ -1,0 +1,124 @@
+<div class="container mt-5">
+    <h3 class="mb-4">Range Input Field</h3>
+
+    <form id="rangeForm">
+        <!-- Label -->
+        <div class="form-group row">
+            <label class="col-md-2 col-form-label"><b>Label</b></label>
+            <div class="col-md-10">
+                <input type="text" class="form-control" id="rangeLabel" placeholder="Enter label">
+            </div>
+        </div>
+
+        <!-- Title -->
+        <div class="form-group row">
+            <label class="col-md-2 col-form-label"><b>Title</b></label>
+            <div class="col-md-10">
+                <input type="text" class="form-control" id="rangeTitle" placeholder="Enter title">
+            </div>
+        </div>
+
+        <!-- Value -->
+        <div class="form-group row">
+            <label class="col-md-2 col-form-label"><b>Value</b></label>
+            <div class="col-md-10">
+                <input type="number" class="form-control" id="rangeValue" placeholder="Enter default value">
+            </div>
+        </div>
+
+        <!-- Min -->
+        <div class="form-group row">
+            <label class="col-md-2 col-form-label"><b>Min</b></label>
+            <div class="col-md-10">
+                <input type="number" class="form-control" id="rangeMin" placeholder="Enter minimum value">
+            </div>
+        </div>
+
+        <!-- Max -->
+        <div class="form-group row">
+            <label class="col-md-2 col-form-label"><b>Max</b></label>
+            <div class="col-md-10">
+                <input type="number" class="form-control" id="rangeMax" placeholder="Enter maximum value">
+            </div>
+        </div>
+
+        <!-- Step -->
+        <div class="form-group row">
+            <label class="col-md-2 col-form-label"><b>Step</b></label>
+            <div class="col-md-10">
+                <input type="number" class="form-control" id="rangeStep" placeholder="Enter step value">
+            </div>
+        </div>
+
+        <!-- Disabled -->
+        <div class="form-group row">
+            <div class="col-md-2"><b>Disabled</b></div>
+            <div class="col-md-10 form-check">
+                <input type="checkbox" class="form-check-input" id="rangeDisabled">
+                <label class="form-check-label" for="rangeDisabled">Enable</label>
+            </div>
+        </div>
+
+        <!-- Required -->
+        <div class="form-group row">
+            <div class="col-md-2"><b>Required</b></div>
+            <div class="col-md-10 form-check">
+                <input type="checkbox" class="form-check-input" id="rangeRequired">
+                <label class="form-check-label" for="rangeRequired">Enable</label>
+            </div>
+        </div>
+    </form>
+
+    <hr>
+
+    <h5 class="mt-5">Live Preview:</h5>
+    <div class="form-group mb-5">
+        <label id="previewRangeLabel"><b>Label</b></label>
+        <input type="range" class="form-control-range" id="previewRangeInput">
+        <span id="previewRangeValue" class="ml-2">0</span>
+    </div>
+</div>
+
+<script>
+    const previewRange = document.getElementById('previewRangeInput');
+    const previewRangeLabel = document.getElementById('previewRangeLabel');
+    const previewRangeValue = document.getElementById('previewRangeValue');
+
+    const fields = {
+        label: document.getElementById('rangeLabel'),
+        title: document.getElementById('rangeTitle'),
+        value: document.getElementById('rangeValue'),
+        min: document.getElementById('rangeMin'),
+        max: document.getElementById('rangeMax'),
+        step: document.getElementById('rangeStep'),
+        disabled: document.getElementById('rangeDisabled'),
+        required: document.getElementById('rangeRequired')
+    };
+
+    function updateRangePreview() {
+        previewRangeLabel.innerHTML = fields.label.value;
+        previewRange.title = fields.title.value || '';
+        previewRange.value = fields.value.value || fields.min.value || 0;
+        previewRange.min = fields.min.value || 0;
+        previewRange.max = fields.max.value || 100;
+        previewRange.step = fields.step.value || 1;
+        previewRange.disabled = fields.disabled.checked;
+        previewRange.required = fields.required.checked;
+
+        // Update span showing current value
+        previewRangeValue.textContent = previewRange.value;
+    }
+
+    // Update the value display while dragging the slider
+    previewRange.addEventListener('input', () => {
+        previewRangeValue.textContent = previewRange.value;
+    });
+
+    Object.values(fields).forEach(field => {
+        field.addEventListener('input', updateRangePreview);
+        field.addEventListener('change', updateRangePreview);
+    });
+
+    // Initialize preview
+    updateRangePreview();
+</script>

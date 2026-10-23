@@ -1,0 +1,77 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block content %}
+
+    <div class='container mt-5'>
+        <div class='card shadow-sm'>
+            <div class='card-header bg-warning'>
+                <h4>Edit Survey</h4>
+            </div>
+
+            <div class='card-body'>
+                <form method='POST'>
+                    {% csrf_token %}
+
+                    <div class='form-group'>
+                        <label>Title</label>
+                        {{ form.title }}
+                    </div>
+
+                    <div class='form-group'>
+                        <label>Description</label>
+                        {{ form.description }}
+                    </div>
+
+                    <div class='form-group'>
+                        <div class='form-check d-flex align-items-center'>
+                            {{ form.isActive }}
+                            <label class='form-check-label' for='{{ form.isActive.id_for_label }}'>
+                                Active
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class='text-right'>
+                        <a href='{% url 'core:survey-list-view' %}' class='btn btn-secondary'>Cancel</a>
+                        <button type='submit' class='btn btn-warning'>Update</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        {% include 'core/field-selector.html' %}
+
+        {% if request.GET.field == 'checkbox' %}
+            {% include 'core/field-checkbox.html' %}
+        {% elif request.GET.field == 'date' %}
+            {% include 'core/field-date.html' %}
+        {% elif request.GET.field == 'datetime-local' %}
+            {% include 'core/field-datetime-local.html' %}
+        {% elif request.GET.field == 'email' %}
+            {% include 'core/field-email.html' %}
+        {% elif request.GET.field == 'month' %}
+            {% include 'core/field-month.html' %}
+        {% elif request.GET.field == 'number' %}
+            {% include 'core/field-number.html' %}
+        {% elif request.GET.field == 'password' %}
+            {% include 'core/field-password.html' %}
+        {% elif request.GET.field == 'radio' %}
+            {% include 'core/field-radio.html' %}
+        {% elif request.GET.field == 'range' %}
+            {% include 'core/field-range.html' %}
+        {% elif request.GET.field == 'tel' %}
+            {% include 'core/field-tel.html' %}
+        {% elif request.GET.field == 'text' %}
+            {% include 'core/field-text.html' %}
+        {% elif request.GET.field == 'time' %}
+            {% include 'core/field-time.html' %}
+        {% elif request.GET.field == 'week' %}
+            {% include 'core/field-week.html' %}
+        {% elif request.GET.field == 'textarea' %}
+            {% include 'core/field-textarea.html' %}
+        {% elif request.GET.field == 'select' %}
+            {% include 'core/field-select.html' %}
+        {% endif %}
+
+    </div>
+{% endblock %}

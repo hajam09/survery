@@ -1,0 +1,86 @@
+<div class='container mt-5'>
+    <h3 class='mb-4'>Email Input Field</h3>
+
+    <form id='emailForm'>
+        <!-- Label -->
+        <div class='form-group row'>
+            <label class='col-md-2 col-form-label'><b>Label</b></label>
+            <div class='col-md-10'>
+                <input type='text' class='form-control' id='emailLabel' placeholder='Enter label'>
+            </div>
+        </div>
+
+        <!-- Title -->
+        <div class='form-group row'>
+            <label class='col-md-2 col-form-label'><b>Title</b></label>
+            <div class='col-md-10'>
+                <input type='text' class='form-control' id='emailTitle' placeholder='Enter title'>
+            </div>
+        </div>
+
+        <!-- Placeholder -->
+        <div class='form-group row'>
+            <label class='col-md-2 col-form-label'><b>Placeholder</b></label>
+            <div class='col-md-10'>
+                <input type='text' class='form-control' id='emailPlaceholder' placeholder='Enter placeholder'>
+            </div>
+        </div>
+
+        <!-- Max Length -->
+        <div class='form-group row'>
+            <label class='col-md-2 col-form-label'><b>Max Length</b></label>
+            <div class='col-md-10'>
+                <input type='number' class='form-control' id='emailMaxLength' placeholder='Enter max length'>
+            </div>
+        </div>
+
+        <!-- Required -->
+        <div class='form-group row'>
+            <div class='col-md-2'><b>Required</b></div>
+            <div class='col-md-10 form-check'>
+                <input type='checkbox' class='form-check-input' id='emailRequired'>
+                <label class='form-check-label' for='emailRequired'>Enable</label>
+            </div>
+        </div>
+        <button type='submit' class='btn btn-primary float-right'> Save</button>
+    </form>
+
+    <h5 class='mt-5'>Live Preview:</h5>
+    <div class='form-group mb-5'>
+        <label id='previewEmailLabel'><b>Label</b></label>
+        <input type='email' class='form-control' id='previewEmailInput'>
+    </div>
+</div>
+
+<script>
+    const previewEmailInput = document.getElementById('previewEmailInput');
+    const previewEmailLabel = document.getElementById('previewEmailLabel');
+
+    const fields = {
+        label: document.getElementById('emailLabel'),
+        title: document.getElementById('emailTitle'),
+        placeholder: document.getElementById('emailPlaceholder'),
+        maxlength: document.getElementById('emailMaxLength'),
+        required: document.getElementById('emailRequired')
+    };
+
+    function updateEmailPreview() {
+        previewEmailLabel.innerHTML = fields.label.value;
+        previewEmailInput.title = fields.title.value || '';
+        previewEmailInput.placeholder = fields.placeholder.value || '';
+        previewEmailInput.maxLength = fields.maxlength.value || '';
+        previewEmailInput.required = fields.required.checked;
+
+        if (fields.value) {
+            previewEmailInput.value = fields.value.value || '';
+        }
+    }
+
+    Object.values(fields).forEach(field => {
+        field.addEventListener('input', updateEmailPreview);
+        field.addEventListener('change', updateEmailPreview);
+    });
+
+    // Initialize preview
+    updateEmailPreview();
+</script>

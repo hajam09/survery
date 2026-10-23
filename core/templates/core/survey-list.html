@@ -1,0 +1,126 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block content %}
+
+    <div class='container mt-5'>
+
+        <form method='GET' class='mb-4'>
+            <div class='form-row align-items-end'>
+
+                <!-- Search -->
+                <div class='col-md-4'>
+                    <label>Search</label>
+                    <input type='text'
+                           name='q'
+                           value='{{ query|default:'' }}'
+                           class='form-control'
+                           placeholder='Search title or description'>
+                </div>
+
+                <!-- Active Filter -->
+                <div class='col-md-2'>
+                    <label>Active</label>
+                    <select name='active' class='form-control'>
+                        <option value=''>All</option>
+                        <option value='true' {% if active == 'true' %}selected{% endif %}>Active</option>
+                        <option value='false' {% if active == 'false' %}selected{% endif %}>Inactive</option>
+                    </select>
+                </div>
+
+                <!-- Buttons -->
+                <div class='col-md-4'>
+                    <button type='submit' class='btn btn-primary'>
+                        Filter
+                    </button>
+                    <a href='{% url 'core:survey-list-view' %}'
+                       class='btn btn-secondary'>
+                        Reset
+                    </a>
+                </div>
+
+            </div>
+        </form>
+        <h2 class='mb-4'>My Surveys</h2>
+
+        <table class='table table-bordered table-hover'>
+            <thead class='thead-dark'>
+            <tr>
+                <th>Title</th>
+                <th>Status</th>
+                <th width='250'>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for survey in surveys %}
+                <tr>
+                    <td>{{ survey.title }}</td>
+                    <td>
+                        {% if survey.isActive %}
+                            <span class='badge badge-success'>Active</span>
+                        {% else %}
+                            <span class='badge badge-secondary'>Inactive</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href='{% url 'core:survey-edit-view' survey.id %}'
+                           class='btn btn-sm btn-warning'>Edit</a>
+
+                        <!-- Delete button triggers modal -->
+                        <button class='btn btn-sm btn-danger'
+                                data-toggle='modal'
+                                data-target='#deleteModal{{ survey.id }}'>
+                            Delete
+                        </button>
+
+                        <!-- Delete Modal -->
+                        <div class='modal fade'
+                             id='deleteModal{{ survey.id }}'
+                             tabindex='-1'>
+                            <div class='modal-dialog'>
+                                <div class='modal-content'>
+                                    <div class='modal-header bg-danger text-white'>
+                                        <h5 class='modal-title'>
+                                            Confirm Delete
+                                        </h5>
+                                        <button type='button'
+                                                class='close'
+                                                data-dismiss='modal'>&times;
+                                        </button>
+                                    </div>
+                                    <div class='modal-body'>
+                                        Are you sure you want to delete
+                                        <strong>{{ survey.title }}</strong>?
+                                    </div>
+                                    <div class='modal-footer'>
+                                        <form method='POST'
+                                              action='{% url 'core:survey-delete-view' survey.id %}'>
+                                            {% csrf_token %}
+                                            <button type='button'
+                                                    class='btn btn-secondary'
+                                                    data-dismiss='modal'>
+                                                Cancel
+                                            </button>
+                                            <button type='submit'
+                                                    class='btn btn-danger'>
+                                                Delete
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan='3' class='text-center'>
+                        No surveys yet.
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}

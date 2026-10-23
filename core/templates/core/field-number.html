@@ -1,0 +1,144 @@
+<div class='container mt-5'>
+    <h3 class='mb-4'>Number Input Field</h3>
+
+    <form id='numberForm'>
+        <!-- Label -->
+        <div class='form-group row'>
+            <label class='col-md-2 col-form-label'><b>Label</b></label>
+            <div class='col-md-10'>
+                <input type='text' class='form-control' id='numberLabel' placeholder='Enter label'>
+            </div>
+        </div>
+
+        <!-- Title -->
+        <div class='form-group row'>
+            <label class='col-md-2 col-form-label'><b>Title</b></label>
+            <div class='col-md-10'>
+                <input type='text' class='form-control' id='numberTitle' placeholder='Enter title'>
+            </div>
+        </div>
+
+        <!-- Placeholder -->
+        <div class='form-group row'>
+            <label class='col-md-2 col-form-label'><b>Placeholder</b></label>
+            <div class='col-md-10'>
+                <input type='text' class='form-control' id='numberPlaceholder' placeholder='Enter placeholder'>
+            </div>
+        </div>
+
+        <!-- Value -->
+        <div class='form-group row'>
+            <label class='col-md-2 col-form-label'><b>Value</b></label>
+            <div class='col-md-10'>
+                <input type='number' class='form-control' id='numberValue' placeholder='Enter default value'>
+            </div>
+        </div>
+
+        <!-- Min -->
+        <div class='form-group row'>
+            <label class='col-md-2 col-form-label'><b>Min</b></label>
+            <div class='col-md-10'>
+                <input type='number' class='form-control' id='numberMin' placeholder='Enter minimum value'>
+            </div>
+        </div>
+
+        <!-- Max -->
+        <div class='form-group row'>
+            <label class='col-md-2 col-form-label'><b>Max</b></label>
+            <div class='col-md-10'>
+                <input type='number' class='form-control' id='numberMax' placeholder='Enter maximum value'>
+            </div>
+        </div>
+
+        <!-- Step -->
+        <div class='form-group row'>
+            <label class='col-md-2 col-form-label'><b>Step</b></label>
+            <div class='col-md-10'>
+                <input type='number' class='form-control' id='numberStep' placeholder='Enter step value'>
+            </div>
+        </div>
+
+        <!-- Pattern -->
+        <div class='form-group row'>
+            <label class='col-md-2 col-form-label'><b>Pattern</b></label>
+            <div class='col-md-10'>
+                <input type='text' class='form-control' id='numberPattern' placeholder='Enter regex pattern'>
+            </div>
+        </div>
+
+        <!-- Readonly -->
+        <div class='form-group row'>
+            <div class='col-md-2'><b>Readonly</b></div>
+            <div class='col-md-10 form-check'>
+                <input type='checkbox' class='form-check-input' id='numberReadonly'>
+                <label class='form-check-label' for='numberReadonly'>Enable</label>
+            </div>
+        </div>
+
+        <!-- Disabled -->
+        <div class='form-group row'>
+            <div class='col-md-2'><b>Disabled</b></div>
+            <div class='col-md-10 form-check'>
+                <input type='checkbox' class='form-check-input' id='numberDisabled'>
+                <label class='form-check-label' for='numberDisabled'>Enable</label>
+            </div>
+        </div>
+
+        <!-- Required -->
+        <div class='form-group row'>
+            <div class='col-md-2'><b>Required</b></div>
+            <div class='col-md-10 form-check'>
+                <input type='checkbox' class='form-check-input' id='numberRequired'>
+                <label class='form-check-label' for='numberRequired'>Enable</label>
+            </div>
+        </div>
+        <button type='submit' class='btn btn-primary float-right'> Save</button>
+    </form>
+
+    <h5 class='mt-5'>Live Preview:</h5>
+    <div class='form-group mb-5'>
+        <label id='previewNumberLabel'><b>Label</b></label>
+        <input type='number' class='form-control' id='previewNumberInput'>
+    </div>
+</div>
+
+<script>
+    const previewNumber = document.getElementById('previewNumberInput');
+    const previewNumberLabel = document.getElementById('previewNumberLabel');
+
+    const fields = {
+        label: document.getElementById('numberLabel'),
+        title: document.getElementById('numberTitle'),
+        placeholder: document.getElementById('numberPlaceholder'),
+        value: document.getElementById('numberValue'),
+        min: document.getElementById('numberMin'),
+        max: document.getElementById('numberMax'),
+        step: document.getElementById('numberStep'),
+        pattern: document.getElementById('numberPattern'),
+        readonly: document.getElementById('numberReadonly'),
+        disabled: document.getElementById('numberDisabled'),
+        required: document.getElementById('numberRequired')
+    };
+
+    function updateNumberPreview() {
+        previewNumberLabel.innerHTML = fields.label.value;
+        previewNumber.title = fields.title.value || '';
+        previewNumber.placeholder = fields.placeholder.value || '';
+        previewNumber.value = fields.value.value || '';
+        previewNumber.min = fields.min.value || '';
+        previewNumber.max = fields.max.value || '';
+        previewNumber.step = fields.step.value || '';
+        previewNumber.pattern = fields.pattern.value || '';
+        previewNumber.readOnly = fields.readonly.checked;
+        previewNumber.disabled = fields.disabled.checked;
+        previewNumber.required = fields.required.checked;
+    }
+
+    Object.values(fields).forEach(field => {
+        field.addEventListener('input', updateNumberPreview);
+        field.addEventListener('change', updateNumberPreview);
+    });
+
+    // Initialize preview
+    updateNumberPreview();
+</script>
